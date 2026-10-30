@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="جاده‌بازار: خرید و فروش لوازم جانبی خودرو، نو و کارکرده">
+<title>جاده‌بازار</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: sticky road-sign header, compact hero with a licence-plate car picker, category strip, ad grid; forms and detail in the same column. */
+:root{
+  --bg:#eef1f2; --surface:#ffffff; --surface-2:#e3e8ea; --ink:#1b2125; --muted:#5d6a71; --line:#d2d9dc;
+  --amber:#f2a900; --amber-ink:#3a2a00; --amber-soft:#fff2c9;
+  --plate:#1e4f9c; --plate-ink:#ffffff;
+  --good:#1f7a4d; --good-soft:#dcf1e6; --warn:#9a5b00; --warn-soft:#fbe9cf; --bad:#b3261e;
+  --stripe:rgba(27,33,37,.06);
+  --f-display:"Lalezar","Vazirmatn",Tahoma,sans-serif;
+  --f-body:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;
+  --r:10px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#13171a; --surface:#1c2226; --surface-2:#252c31; --ink:#e8ecee; --muted:#9aa7ae; --line:#323b41;
+  --amber:#ffbf1f; --amber-ink:#2a1e00; --amber-soft:#3a2f12; --plate:#4f86de; --plate-ink:#ffffff;
+  --good:#5fd39a; --good-soft:#163828; --warn:#f0b35a; --warn-soft:#3b2c14; --bad:#ff8a80; --stripe:rgba(255,255,255,.04);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13171a; --surface:#1c2226; --surface-2:#252c31; --ink:#e8ecee; --muted:#9aa7ae; --line:#323b41;
+  --amber:#ffbf1f; --amber-ink:#2a1e00; --amber-soft:#3a2f12; --plate:#4f86de; --plate-ink:#ffffff;
+  --good:#5fd39a; --good-soft:#163828; --warn:#f0b35a; --warn-soft:#3b2c14; --bad:#ff8a80; --stripe:rgba(255,255,255,.04);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;direction:rtl}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;margin:0}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg)}
+header.top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.logo-mark{width:38px;height:38px;border-radius:8px;background:var(--amber);display:grid;place-items:center;color:var(--amber-ink)}
+.logo b{font-family:var(--f-display);font-size:26px;font-weight:400;line-height:1}
+nav.tabs{display:flex;gap:4px;margin-inline-start:auto;flex-wrap:wrap}
+nav.tabs a{color:inherit;text-decoration:none;padding:6px 12px;border-radius:999px;font-weight:500;font-size:14px;opacity:.8;display:flex;gap:6px;align-items:center}
+nav.tabs a:hover{opacity:1;background:rgba(127,127,127,.18)}
+nav.tabs a[aria-current="page"]{opacity:1;background:rgba(127,127,127,.25)}
+nav.tabs a.cta{background:var(--amber);color:var(--amber-ink);opacity:1;font-weight:700}
+.count{font-size:12px;background:var(--amber);color:var(--amber-ink);border-radius:999px;padding:0 7px;line-height:20px;font-variant-numeric:tabular-nums}
+
+/* hero */
+.hero{padding-block:28px 8px;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:end}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,5vw,46px);line-height:1.25}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--amber) 62%);padding-inline:4px}
+.hero p{color:var(--muted);margin:8px 0 0;max-width:46ch}
+.finder{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.finder label{font-size:12px;color:var(--muted);letter-spacing:.02em}
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:var(--r);padding:0 12px;background:var(--bg)}
+.search input{border:0;background:transparent;padding:10px 0;width:100%;min-width:0;outline:none}
+/* licence-plate styled car picker */
+.plate{display:flex;align-items:stretch;border:2px solid var(--ink);border-radius:8px;overflow:hidden;background:#fff;color:#111}
+.plate .ir{background:var(--plate);color:var(--plate-ink);display:grid;place-items:center;padding:0 8px;font-size:10px;font-weight:700;line-height:1.2;text-align:center;direction:ltr}
+.plate select{border:0;background:transparent;padding:8px 10px;width:100%;font-weight:700;font-size:16px;color:#111;color-scheme:light}
+
+/* categories */
+.cats{display:flex;gap:8px;overflow-x:auto;padding-block:18px 6px;scrollbar-width:thin}
+.cat{flex:0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px 6px 12px;cursor:pointer;font-size:14px;white-space:nowrap}
+.cat svg{width:18px;height:18px}
+.cat[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-block:10px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:5px 14px;cursor:pointer;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink);font-weight:700}
+.toolbar select{border:1px solid var(--line);border-radius:999px;background:var(--surface);padding:5px 12px;font-size:14px}
+.result-count{margin-inline-start:auto;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;padding-block:6px 40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;text-align:start;padding:0;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-2px);border-color:var(--muted)}
+.thumb{aspect-ratio:16/10;max-width:100%;display:grid;place-items:center;position:relative;color:var(--ink);
+  background:repeating-linear-gradient(-45deg,var(--stripe) 0 14px,transparent 14px 28px),var(--surface-2)}
+.thumb svg{width:56px;height:56px;opacity:.85}
+.thumb .save{position:absolute;top:8px;left:8px;width:34px;height:34px;border-radius:50%;border:0;background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.thumb .save[aria-pressed="true"]{color:var(--bad)}
+.thumb .save svg{width:18px;height:18px;opacity:1}
+.card .body{padding:12px 14px 14px;display:grid;gap:6px;flex:1}
+.card h3{font-size:16px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--muted)}
+.pill{font-size:12px;border-radius:999px;padding:1px 9px;font-weight:500}
+.pill.new{background:var(--good-soft);color:var(--good)}
+.pill.used{background:var(--warn-soft);color:var(--warn)}
+.pill.sample{background:var(--surface-2);color:var(--muted);border:1px dashed var(--line)}
+.pill.car{background:var(--amber-soft);color:var(--ink)}
+.price{margin-top:auto;font-weight:800;font-size:17px;font-variant-numeric:tabular-nums}
+.price small{font-weight:500;color:var(--muted);font-size:12px}
+
+.empty{grid-column:1/-1;border:2px dashed var(--line);border-radius:14px;padding:40px 20px;text-align:center;color:var(--muted);display:grid;gap:12px;justify-items:center}
+.empty h3{color:var(--ink);font-size:20px}
+.btn{border:0;border-radius:var(--r);padding:10px 18px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn.primary{background:var(--amber);color:var(--amber-ink)}
+.btn.ghost{background:var(--surface-2);color:var(--ink)}
+.btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+.notice{border-radius:var(--r);padding:10px 14px;background:var(--amber-soft);font-size:14px;margin-block:10px}
+
+/* sell form */
+.form-wrap{display:grid;grid-template-columns:1fr 300px;gap:24px;padding-block:24px 48px;align-items:start}
+.form-wrap>*{min-width:0}
+form.sell{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:14px;grid-template-columns:1fr 1fr}
+form.sell h2{grid-column:1/-1;font-family:var(--f-display);font-weight:400;font-size:28px}
+.field{display:grid;gap:4px}
+.field.full{grid-column:1/-1}
+.field label{font-size:13px;font-weight:500}
+.field .hint{font-size:12px;color:var(--muted)}
+.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:9px 11px;width:100%}
+.field textarea{min-height:110px;resize:vertical}
+.field input[aria-invalid="true"]{border-color:var(--bad)}
+.err{color:var(--bad);font-size:12px;min-height:0}
+.form-actions{grid-column:1/-1;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.status{font-size:14px;color:var(--muted)}
+aside.tips{background:var(--surface-2);border-radius:14px;padding:18px;font-size:14px}
+aside.tips h3{font-size:16px;margin-bottom:8px}
+aside.tips ol{margin:0;padding-inline-start:20px;display:grid;gap:6px}
+
+.section-head{padding-block:24px 4px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.section-head h2{font-family:var(--f-display);font-weight:400;font-size:30px}
+.section-head p{color:var(--muted);margin:0}
+
+/* detail dialog */
+dialog{border:0;border-radius:16px;padding:0;width:min(640px,calc(100vw - 32px));background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(10,14,16,.55)}
+.d-head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.d-head h2{font-size:19px;flex:1;min-width:0;overflow-wrap:anywhere}
+.x{border:0;background:var(--surface-2);width:34px;height:34px;border-radius:50%;cursor:pointer;flex:0 0 auto}
+.d-body{padding:18px;display:grid;gap:14px}
+.d-body .thumb{border-radius:12px}
+.specs{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:0;font-size:14px}
+.specs dt{color:var(--muted)}
+.specs dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+.desc{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.contact{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--bg);border-radius:var(--r);padding:10px 12px}
+.phone{font-weight:800;font-size:18px;direction:ltr;user-select:all;font-variant-numeric:tabular-nums}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;z-index:20}
+
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{padding-block:18px}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .form-wrap{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  form.sell{grid-template-columns:1fr}
+  nav.tabs{margin-inline-start:0;width:100%}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+}
+@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#browse" aria-label="جاده‌بازار، صفحه اصلی">
+      <span class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 3 5 21M15 3l4 18M12 5v2M12 11v2M12 17v2"/></svg></span>
+      <b>جاده‌بازار</b>
+    </a>
+    <nav class="tabs" aria-label="بخش‌ها">
+      <a href="#browse" data-view="browse">همه آگهی‌ها</a>
+      <a href="#saved" data-view="saved">نشان‌شده‌ها <span class="count" id="savedCount">۰</span></a>
+      <a href="#mine" data-view="mine">آگهی‌های من</a>
+      <a href="#sell" data-view="sell" class="cta">+ ثبت آگهی فروش</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- BROWSE -->
+  <section id="view-browse">
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <h1>لوازم جانبی خودرو، <em>دست اول و دست دوم</em></h1>
+          <p>ضبط و مانیتور، روکش صندلی، رینگ، دزدگیر و هر چیزی که ماشینت لازم دارد. خودرو را انتخاب کن تا فقط قطعات سازگار را ببینی.</p>
+        </div>
+        <div class="finder">
+          <div>
+            <label for="q">جستجو</label>
+            <div class="search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+              <input id="q" type="search" placeholder="مثلاً: مانیتور اندروید، کفپوش سه‌بعدی…">
+            </div>
+          </div>
+          <div>
+            <label for="carFilter">خودروی شما</label>
+            <div class="plate">
+              <span class="ir">I.R.<br>IRAN</span>
+              <select id="carFilter"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cats" id="cats" role="group" aria-label="دسته‌بندی"></div>
+
+      <div class="toolbar">
+        <div class="seg" id="condSeg" role="group" aria-label="وضعیت کالا">
+          <button type="button" data-cond="" aria-pressed="true">همه</button>
+          <button type="button" data-cond="new" aria-pressed="false">نو</button>
+          <button type="button" data-cond="used" aria-pressed="false">کارکرده</button>
+        </div>
+        <select id="sort" aria-label="مرتب‌سازی">
+          <option value="new">جدیدترین</option>
+          <option value="cheap">ارزان‌ترین</option>
+          <option value="exp">گران‌ترین</option>
+        </select>
+        <span class="result-count" id="resultCount"></span>
+      </div>
+      <div id="dbNotice" class="notice" hidden></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- SAVED -->
+  <section id="view-saved" hidden>
+    <div class="wrap">
+      <div class="section-head"><h2>نشان‌شده‌ها</h2><p>آگهی‌هایی که با ♥ نگه داشتی. این فهرست فقط در همین مرورگر ذخیره می‌شود.</p></div>
+      <div class="grid" id="savedGrid"></div>
+    </div>
+  </section>
+
+  <!-- MINE -->
+  <section id="view-mine" hidden>
+    <div class="wrap">
+      <div class="section-head"><h2>آگهی‌های من</h2><p>آگهی‌هایی که ثبت کرده‌ای. برای حذف یا علامت «فروخته شد» روی هر آگهی بزن.</p></div>
+      <div class="grid" id="mineGrid"></div>
+    </div>
+  </section>
+
+  <!-- SELL -->
+  <section id="view-sell" hidden>
+    <div class="wrap form-wrap">
+      <form class="sell" id="sellForm" novalidate>
+        <h2>ثبت آگهی فروش</h2>
+        <div class="field full">
+          <label for="f-title">عنوان آگهی</label>
+          <input id="f-title" maxlength="80" placeholder="مثلاً: مانیتور اندروید ۹ اینچ با دوربین دنده عقب" required>
+          <span class="err" id="e-title"></span>
+        </div>
+        <div class="field">
+          <label for="f-cat">دسته‌بندی</label>
+          <select id="f-cat"></select>
+        </div>
+        <div class="field">
+          <label for="f-car">سازگار با خودرو</label>
+          <select id="f-car"></select>
+        </div>
+        <div class="field">
+          <label for="f-cond">وضعیت</label>
+          <select id="f-cond"><option value="new">نو (آکبند)</option><option value="used">کارکرده</option></select>
+        </div>
+        <div class="field">
+          <label for="f-price">قیمت (تومان)</label>
+          <input id="f-price" inputmode="numeric" placeholder="۴٬۵۰۰٬۰۰۰" required>
+          <span class="hint" id="pricePreview"></span>
+          <span class="err" id="e-price"></span>
+        </div>
+        <div class="field">
+          <label for="f-city">شهر</label>
+          <input id="f-city" maxlength="30" placeholder="تهران" required>
+          <span class="err" id="e-city"></span>
+        </div>
+        <div class="field">
+          <label for="f-phone">شماره تماس</label>
+          <input id="f-phone" inputmode="tel" maxlength="14" placeholder="۰۹۱۲۱۲۳۴۵۶۷" required dir="ltr" style="text-align:right">
+          <span class="hint">این شماره برای همه بازدیدکنندگان آگهی نمایش داده می‌شود.</span>
+          <span class="err" id="e-phone"></span>
+        </div>
+        <div class="field full">
+          <label for="f-desc">توضیحات</label>
+          <textarea id="f-desc" maxlength="1200" placeholder="مدل دقیق، مدت استفاده، گارانتی، ایرادهای احتمالی، نصب در محل یا ارسال…"></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn primary" type="submit" id="submitBtn">انتشار آگهی</button>
+          <span class="status" id="sellStatus" role="status"></span>
+        </div>
+      </form>
+      <aside class="tips">
+        <h3>آگهی‌ای که زودتر فروش می‌رود</h3>
+        <ol>
+          <li>نام دقیق برند و مدل را در عنوان بنویس.</li>
+          <li>خودروهای سازگار را درست انتخاب کن تا خریدار با فیلتر پیدایت کند.</li>
+          <li>برای کالای کارکرده، مدت استفاده و ایرادها را صادقانه بگو.</li>
+          <li>قیمت را با بازار مقایسه کن. آگهی‌های هم‌دسته را در صفحه اصلی ببین.</li>
+          <li>پیش از پرداخت، کالا را حضوری ببین و بیعانه واریز نکن.</li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">جاده‌بازار · خرید و فروش مستقیم بین خریدار و فروشنده. پیش از هر پرداختی کالا را از نزدیک ببینید.</div></footer>
+
+<dialog id="detail" aria-labelledby="d-title">
+  <div class="d-head"><h2 id="d-title"></h2><button class="x" type="button" id="closeDetail" aria-label="بستن">✕</button></div>
+  <div class="d-body" id="d-body"></div>
+</dialog>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const CATS = [
+  {id:"audio", name:"صوتی و تصویری", icon:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="9" cy="12" r="2.5"/><path d="M15 10h3M15 14h3"/>'},
+  {id:"seat", name:"روکش و کفپوش", icon:'<path d="M7 3h6a2 2 0 0 1 2 2v8H7z"/><path d="M5 13h12l1 4H6z"/><path d="M8 17v4M16 17v4"/>'},
+  {id:"light", name:"چراغ و نور", icon:'<path d="M14 6a6 6 0 0 1 0 12H11V6z"/><path d="M3 8h5M3 12h5M3 16h5"/>'},
+  {id:"wheel", name:"رینگ و لاستیک", icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/>'},
+  {id:"security", name:"دزدگیر و ردیاب", icon:'<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/>'},
+  {id:"care", name:"شستشو و نگهداری", icon:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 14a2.5 2.5 0 0 0 2.5 2.5"/>'},
+  {id:"interior", name:"تزئینات داخلی", icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M4 10c4 1 12 1 16 0M12 14v7"/>'},
+  {id:"emergency", name:"ابزار و امداد", icon:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17v.5"/>'},
+];
+const CARS = ["همه خودروها","پراید","تیبا / ساینا / کوییک","پژو ۲۰۶","پژو ۴۰۵ / پارس","سمند","دنا","رانا","شاهین","تارا","ری‌را","هایما","چری / ام‌وی‌ام","جک","تویوتا","هیوندای / کیا","سایر"];
+const COND = {new:"نو", used:"کارکرده"};
+const svg = (paths, cls="") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+const HEART = '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>';
+const catById = id => CATS.find(c=>c.id===id) || CATS[0];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fa = n => Number(n).toLocaleString("fa-IR");
+const toLatin = s => String(s).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+const faDigits = s => String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const rtf = new Intl.RelativeTimeFormat("fa", {numeric:"auto"});
+function ago(ts){
+  const s = (ts - Date.now())/1000, a = Math.abs(s);
+  if (a < 3600) return rtf.format(Math.round(s/60), "minute");
+  if (a < 86400) return rtf.format(Math.round(s/3600), "hour");
+  if (a < 86400*30) return rtf.format(Math.round(s/86400), "day");
+  return rtf.format(Math.round(s/(86400*30)), "month");
+}
+
+/* state: ads live in this browser's localStorage; sample ads are built in */
+const uid = "me";
+const H = 3600e3, D = 24*H, now = Date.now();
+const SAMPLES = [
+  {id:"s1", title:"مانیتور اندروید ۹ اینچ با دوربین دنده عقب", cat:"audio", car:"پژو ۲۰۶", cond:"new", price:6800000, city:"تهران", phone:"09120000001", desc:"اندروید ۱۲، رم ۲ گیگ، کرپلی بی‌سیم. همراه با فریم مخصوص ۲۰۶ و دوربین.", createdAt:now-3*H},
+  {id:"s2", title:"کفپوش سه‌بعدی چرم", cat:"seat", car:"دنا", cond:"new", price:2450000, city:"مشهد", phone:"09150000002", desc:"لبه‌دار، ضدآب، رنگ مشکی با دوخت قرمز.", createdAt:now-9*H},
+  {id:"s3", title:"رینگ اسپرت ۱۶ اینچ (سری ۴ عددی)", cat:"wheel", car:"پژو ۴۰۵ / پارس", cond:"used", price:14500000, city:"اصفهان", phone:"09130000003", desc:"یک سال کارکرد، بدون تاب و ضربه. لاستیک ندارد.", createdAt:now-1*D},
+  {id:"s4", title:"دزدگیر تصویری با ردیاب GPS", cat:"security", car:"همه خودروها", cond:"new", price:3900000, city:"شیراز", phone:"09170000004", desc:"کنترل با اپلیکیشن، قطع از راه دور، سیم‌کارت جدا.", createdAt:now-2*D},
+  {id:"s5", title:"هدلایت LED زنون سفید H4", cat:"light", car:"پراید", cond:"new", price:1350000, city:"تبریز", phone:"09140000005", desc:"۶۵۰۰ کلوین، فن‌دار، گارانتی شش ماه.", createdAt:now-3*D},
+  {id:"s6", title:"روکش صندلی پارچه‌ای طرح فابریک", cat:"seat", car:"تیبا / ساینا / کوییک", cond:"used", price:1100000, city:"کرج", phone:"09120000006", desc:"شش ماه استفاده، تمیز و بدون پارگی.", createdAt:now-4*D},
+  {id:"s7", title:"پک امداد خودرو: جک، کابل باتری، جعبه کمک‌های اولیه", cat:"emergency", car:"همه خودروها", cond:"new", price:1750000, city:"تهران", phone:"09120000007", desc:"کیف برزنتی، جک دو تن، کابل ۳ متری.", createdAt:now-5*D},
+  {id:"s8", title:"واکس و پولیش بدنه با پد", cat:"care", car:"همه خودروها", cond:"new", price:690000, city:"رشت", phone:"09110000008", desc:"ست کامل سه‌مرحله‌ای با دستمال مایکروفایبر.", createdAt:now-6*D},
+].map(a=>({...a, sample:true, sold:false}));
+
+let ads = [];           // flattened: {...ad, ownerId, key}
+let loaded = false;
+const filt = {q:"", car:"همه خودروها", cat:"", cond:"", sort:"new"};
+let saved = new Set();
+try { saved = new Set(JSON.parse(localStorage.getItem("jb-saved") || "[]")); } catch(e){}
+function persistSaved(){ try{ localStorage.setItem("jb-saved", JSON.stringify([...saved])); }catch(e){} }
+function loadMine(){ try { const v = JSON.parse(localStorage.getItem("jb-ads") || "[]"); return Array.isArray(v) ? v : []; } catch(e){ return []; } }
+function rebuild(mine){
+  ads = [...mine.map(a=>({...a, ownerId:uid, key:uid+":"+a.id})), ...SAMPLES.map(a=>({...a, ownerId:"sample", key:"sample:"+a.id}))];
+  loaded = true;
+}
+
+/* static UI */
+$("#carFilter").innerHTML = CARS.map(c=>`<option>${c}</option>`).join("");
+$("#f-car").innerHTML = CARS.map(c=>`<option>${c}</option>`).join("");
+$("#f-cat").innerHTML = CATS.map(c=>`<option value="${c.id}">${c.name}</option>`).join("");
+$("#cats").innerHTML = `<button class="cat" type="button" data-cat="" aria-pressed="true">همه دسته‌ها</button>` +
+  CATS.map(c=>`<button class="cat" type="button" data-cat="${c.id}" aria-pressed="false">${svg(c.icon)}${c.name}</button>`).join("");
+
+/* rendering */
+function card(a, mine=false){
+  const c = catById(a.cat), on = saved.has(a.key);
+  return `<article class="card" tabindex="0" data-key="${esc(a.key)}" aria-label="${esc(a.title)}">
+    <div class="thumb">${svg(c.icon)}
+      ${mine ? "" : `<button class="save" type="button" data-save="${esc(a.key)}" aria-pressed="${on}" aria-label="نشان کردن">${svg(HEART)}</button>`}
+    </div>
+    <div class="body">
+      <h3>${esc(a.title)}</h3>
+      <div class="meta">
+        <span class="pill ${a.cond==="used"?"used":"new"}">${COND[a.cond]||"نو"}</span>
+        ${a.sold ? `<span class="pill used">فروخته شد</span>` : ""}
+        ${a.sample ? `<span class="pill sample">نمونه</span>` : ""}
+        <span class="pill car">${esc(a.car)}</span>
+      </div>
+      <div class="meta">${esc(a.city)} · ${ago(a.createdAt||Date.now())}</div>
+      <div class="price">${fa(a.price)} <small>تومان</small></div>
+    </div></article>`;
+}
+
+function applyFilters(list){
+  const q = filt.q.trim().toLowerCase();
+  let out = list.filter(a =>
+    !a.sold &&
+    (!filt.cat || a.cat===filt.cat) &&
+    (!filt.cond || a.cond===filt.cond) &&
+    (filt.car==="همه خودروها" || a.car===filt.car || a.car==="همه خودروها") &&
+    (!q || (a.title+" "+(a.desc||"")+" "+a.city).toLowerCase().includes(q)));
+  const by = {new:(x,y)=>(y.createdAt||0)-(x.createdAt||0), cheap:(x,y)=>x.price-y.price, exp:(x,y)=>y.price-x.price}[filt.sort];
+  return out.sort(by);
+}
+
+function renderBrowse(){
+  const list = applyFilters(ads);
+  $("#resultCount").textContent = loaded ? `${fa(list.length)} آگهی` : "";
+  let html;
+  if (!loaded) html = `<div class="empty"><h3>در حال بارگذاری آگهی‌ها…</h3></div>`;
+  else if (!ads.length) html = `<div class="empty">
+      ${svg(CATS[0].icon).replace('<svg','<svg width="44" height="44"')}
+      <h3>هنوز آگهی‌ای ثبت نشده</h3>
+      <p>اولین نفری باش که لوازم جانبی ماشینش را برای فروش می‌گذارد. آگهی‌ها اینجا برای همه نمایش داده می‌شوند.</p>
+      <a class="btn primary" href="#sell">ثبت اولین آگهی</a></div>`;
+  else if (!list.length) html = `<div class="empty"><h3>آگهی‌ای با این فیلترها پیدا نشد</h3><p>دسته یا خودروی دیگری را امتحان کن.</p><button class="btn ghost" type="button" id="resetF">پاک کردن فیلترها</button></div>`;
+  else html = list.map(a=>card(a)).join("");
+  $("#grid").innerHTML = html;
+  $("#resetF")?.addEventListener("click", resetFilters);
+}
+function renderSaved(){
+  const list = ads.filter(a=>saved.has(a.key));
+  $("#savedCount").textContent = fa(list.length);
+  $("#savedGrid").innerHTML = list.length ? list.map(a=>card(a)).join("") :
+    `<div class="empty"><h3>هنوز چیزی نشان نکرده‌ای</h3><p>روی ♥ هر آگهی بزن تا اینجا بماند.</p><a class="btn ghost" href="#browse">دیدن آگهی‌ها</a></div>`;
+}
+function myAds(){ return uid ? ads.filter(a=>a.ownerId===uid) : []; }
+function renderMine(){
+  const list = myAds();
+  $("#mineGrid").innerHTML = list.length ? list.map(a=>card(a,true)).join("") :
+    `<div class="empty"><h3>آگهی فعالی نداری</h3><p>لوازم اضافه ماشینت را بفروش.</p><a class="btn primary" href="#sell">ثبت آگهی</a></div>`;
+}
+function renderAll(){ renderBrowse(); renderSaved(); renderMine(); }
+
+function resetFilters(){
+  Object.assign(filt,{q:"",car:"همه خودروها",cat:"",cond:""});
+  $("#q").value=""; $("#carFilter").value="همه خودروها";
+  document.querySelectorAll("[data-cat]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.cat===""));
+  document.querySelectorAll("[data-cond]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.cond===""));
+  renderBrowse();
+}
+
+/* detail */
+function openDetail(key){
+  const a = ads.find(x=>x.key===key); if(!a) return;
+  const c = catById(a.cat), mine = a.ownerId===uid;
+  $("#d-title").textContent = a.title;
+  $("#d-body").innerHTML = `
+    <div class="thumb">${svg(c.icon)}</div>
+    <div class="price" style="font-size:22px">${fa(a.price)} <small>تومان</small></div>
+    <dl class="specs">
+      <dt>دسته</dt><dd>${c.name}</dd>
+      <dt>سازگار با</dt><dd>${esc(a.car)}</dd>
+      <dt>وضعیت</dt><dd>${COND[a.cond]||"نو"}${a.sold?" · فروخته شد":""}</dd>
+      <dt>شهر</dt><dd>${esc(a.city)}</dd>
+      <dt>تاریخ ثبت</dt><dd>${ago(a.createdAt||Date.now())}</dd>
+    </dl>
+    ${a.desc ? `<p class="desc">${esc(a.desc)}</p>` : ""}
+    ${mine ? `<div class="contact">
+        <button class="btn ghost" type="button" id="toggleSold">${a.sold?"برگرداندن به فروش":"علامت فروخته شد"}</button>
+        <button class="btn danger" type="button" id="delAd">حذف آگهی</button>
+        <span class="status" id="delStatus"></span></div>`
+      : a.sample ? `<div class="contact"><span class="status">این یک آگهی نمونه برای نمایش سایت است و فروشنده واقعی ندارد.</span></div>`
+      : `<div class="contact" id="contactBox">
+        <button class="btn primary" type="button" id="showPhone">نمایش شماره فروشنده</button>
+        <button class="btn ghost" type="button" data-save="${esc(a.key)}" aria-pressed="${saved.has(a.key)}">${saved.has(a.key)?"♥ نشان‌شده":"♡ نشان کردن"}</button></div>
+        <p class="hint" style="margin:0;font-size:13px;color:var(--muted)">هشدار: قبل از دیدن کالا هیچ مبلغی به عنوان بیعانه واریز نکنید.</p>`}`;
+  $("#showPhone")?.addEventListener("click", () => {
+    $("#contactBox").innerHTML = `<span class="phone" id="phoneTxt">${esc(faDigits(a.phone))}</span>
+      <button class="btn ghost" type="button" id="copyPhone">کپی شماره</button>`;
+    $("#copyPhone").addEventListener("click", () => {
+      navigator.clipboard?.writeText(toLatin(a.phone)).then(()=>toast("شماره کپی شد"), ()=>{
+        const r=document.createRange(); r.selectNodeContents($("#phoneTxt")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("شماره انتخاب شد؛ کپی کنید");
+      });
+    });
+  });
+  $("#delAd")?.addEventListener("click", function(){
+    if (this.dataset.armed){ saveMine(myAds().filter(x=>x.id!==a.id)).then(()=>{ $("#detail").close(); toast("آگهی حذف شد"); }, e=>{$("#delStatus").textContent=errText(e);}); }
+    else { this.dataset.armed="1"; this.textContent="مطمئنی؟ دوباره بزن"; }
+  });
+  $("#toggleSold")?.addEventListener("click", () => {
+    saveMine(myAds().map(x=>x.id===a.id?{...x,sold:!x.sold}:x)).then(()=>{ $("#detail").close(); toast(a.sold?"آگهی دوباره فعال شد":"به عنوان فروخته‌شده علامت خورد"); }, e=>{$("#delStatus").textContent=errText(e);});
+  });
+  const d = $("#detail"); if (!d.open) d.showModal();
+}
+$("#closeDetail").addEventListener("click", ()=>$("#detail").close());
+$("#detail").addEventListener("click", e=>{ if(e.target===e.currentTarget) e.currentTarget.close(); });
+
+/* events */
+document.addEventListener("click", e => {
+  const s = e.target.closest("[data-save]");
+  if (s){ e.stopPropagation(); const k=s.dataset.save;
+    saved.has(k)?saved.delete(k):saved.add(k); persistSaved(); renderAll();
+    if ($("#detail").open) openDetail(k);
+    return; }
+  const c = e.target.closest(".card"); if (c) openDetail(c.dataset.key);
+});
+document.addEventListener("keydown", e => { if (e.key==="Enter" && e.target.classList?.contains("card")) openDetail(e.target.dataset.key); });
+$("#q").addEventListener("input", e=>{ filt.q=e.target.value; renderBrowse(); });
+$("#carFilter").addEventListener("change", e=>{ filt.car=e.target.value; renderBrowse(); });
+$("#sort").addEventListener("change", e=>{ filt.sort=e.target.value; renderBrowse(); });
+$("#cats").addEventListener("click", e=>{ const b=e.target.closest("[data-cat]"); if(!b) return;
+  filt.cat=b.dataset.cat; document.querySelectorAll("[data-cat]").forEach(x=>x.setAttribute("aria-pressed", x===b)); renderBrowse(); });
+$("#condSeg").addEventListener("click", e=>{ const b=e.target.closest("[data-cond]"); if(!b) return;
+  filt.cond=b.dataset.cond; document.querySelectorAll("[data-cond]").forEach(x=>x.setAttribute("aria-pressed", x===b)); renderBrowse(); });
+
+let toastT; function toast(m){ const t=$("#toast"); t.textContent=m; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true, 2600); }
+
+/* routing */
+const VIEWS=["browse","saved","mine","sell"];
+function route(){
+  const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "browse";
+  VIEWS.forEach(n=>$("#view-"+n).hidden = n!==v);
+  document.querySelectorAll("nav.tabs a").forEach(a=>{ if(a.dataset.view===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  if (v!=="browse") scrollTo(0,0);
+}
+addEventListener("hashchange", route);
+
+/* sell form */
+const priceIn = $("#f-price");
+priceIn.addEventListener("input", () => {
+  const n = parseInt(toLatin(priceIn.value).replace(/\D/g,""),10);
+  $("#pricePreview").textContent = n ? `${fa(n)} تومان` : "";
+});
+function fieldErr(id, msg){ $("#e-"+id).textContent = msg||""; $("#f-"+id).setAttribute("aria-invalid", msg?"true":"false"); return !msg; }
+function errText(e){
+  return "ذخیره نشد. حافظه مرورگر در دسترس نیست (مثلاً در حالت ناشناس).";
+}
+function saveMine(list){
+  const clean = list.map(({ownerId,key,...a})=>a);
+  try { localStorage.setItem("jb-ads", JSON.stringify(clean)); }
+  catch(e){ return Promise.reject({code:"storage"}); }
+  rebuild(clean); renderAll();
+  return Promise.resolve();
+}
+$("#sellForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const title=$("#f-title").value.trim(), city=$("#f-city").value.trim();
+  const price=parseInt(toLatin(priceIn.value).replace(/\D/g,""),10);
+  const phone=toLatin($("#f-phone").value).replace(/[^\d+]/g,"");
+  let ok = fieldErr("title", title.length<4 ? "عنوان را کامل‌تر بنویس (حداقل ۴ حرف)." : "");
+  ok = fieldErr("price", !price || price<1000 ? "قیمت را به تومان وارد کن." : "") && ok;
+  ok = fieldErr("city", !city ? "شهر را بنویس." : "") && ok;
+  ok = fieldErr("phone", !/^(\+98|0)?9\d{9}$/.test(phone) ? "شماره موبایل معتبر وارد کن، مثل ۰۹۱۲۱۲۳۴۵۶۷." : "") && ok;
+  if (!ok) return;
+  const ad = {id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), title, city, price, phone,
+    cat:$("#f-cat").value, car:$("#f-car").value, cond:$("#f-cond").value, desc:$("#f-desc").value.trim().slice(0,1200), createdAt:Date.now(), sold:false};
+  const btn=$("#submitBtn"); btn.disabled=true; $("#sellStatus").textContent="در حال انتشار…";
+  try {
+    await saveMine([...myAds(), ad]);
+    e.target.reset(); $("#pricePreview").textContent=""; $("#sellStatus").textContent="";
+    toast("آگهی منتشر شد"); location.hash="mine";
+  } catch(err){ $("#sellStatus").textContent = errText(err); }
+  finally { btn.disabled=false; }
+});
+
+/* data */
+function showNotice(m){ const n=$("#dbNotice"); n.textContent=m; n.hidden=!m; }
+function start(){
+  rebuild(loadMine());
+  showNotice("نسخه نمایشی: آگهی‌های «نمونه» ساختگی‌اند و آگهی‌هایی که ثبت می‌کنی فقط در همین مرورگر ذخیره می‌شوند.");
+  renderAll(); route();
+}
+start();
+</script>
+</body>
+</html>
