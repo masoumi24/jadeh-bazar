@@ -15,6 +15,7 @@
   --amber:#f2a900; --amber-ink:#3a2a00; --amber-soft:#fff2c9;
   --plate:#1e4f9c; --plate-ink:#ffffff;
   --good:#1f7a4d; --good-soft:#dcf1e6; --warn:#9a5b00; --warn-soft:#fbe9cf; --bad:#b3261e;
+  --red:#d0161b; --red-deep:#9e0f13; --red-ink:#ffffff; --red-soft:#fde3e3;
   --stripe:rgba(27,33,37,.06);
   --f-display:"Lalezar","Vazirmatn",Tahoma,sans-serif;
   --f-body:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;
@@ -25,11 +26,13 @@
   --bg:#13171a; --surface:#1c2226; --surface-2:#252c31; --ink:#e8ecee; --muted:#9aa7ae; --line:#323b41;
   --amber:#ffbf1f; --amber-ink:#2a1e00; --amber-soft:#3a2f12; --plate:#4f86de; --plate-ink:#ffffff;
   --good:#5fd39a; --good-soft:#163828; --warn:#f0b35a; --warn-soft:#3b2c14; --bad:#ff8a80; --stripe:rgba(255,255,255,.04);
+  --red:#e5363b; --red-deep:#a3161b; --red-ink:#ffffff; --red-soft:#3d1517;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#13171a; --surface:#1c2226; --surface-2:#252c31; --ink:#e8ecee; --muted:#9aa7ae; --line:#323b41;
   --amber:#ffbf1f; --amber-ink:#2a1e00; --amber-soft:#3a2f12; --plate:#4f86de; --plate-ink:#ffffff;
   --good:#5fd39a; --good-soft:#163828; --warn:#f0b35a; --warn-soft:#3b2c14; --bad:#ff8a80; --stripe:rgba(255,255,255,.04);
+  --red:#e5363b; --red-deep:#a3161b; --red-ink:#ffffff; --red-soft:#3d1517;
   color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -105,6 +108,31 @@ nav.tabs a.cta{background:var(--amber);color:var(--amber-ink);opacity:1;font-wei
 .price{margin-top:auto;font-weight:800;font-size:17px;font-variant-numeric:tabular-nums}
 .price small{font-weight:500;color:var(--muted);font-size:12px}
 
+/* special tire sale */
+.special{margin-block:20px 4px;border-radius:16px;overflow:hidden;color:var(--red-ink);
+  background:repeating-linear-gradient(-45deg,rgba(255,255,255,.07) 0 16px,transparent 16px 32px),linear-gradient(135deg,var(--red),var(--red-deep))}
+.special-in{padding:20px;display:grid;gap:16px}
+.special-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.special-head .tag{background:var(--red-ink);color:var(--red);font-weight:800;border-radius:999px;padding:2px 12px;font-size:13px}
+.special-head h2{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,4vw,36px);line-height:1.3}
+.special-head p{margin:0;opacity:.9;flex-basis:100%;font-size:14px}
+.special-head .btn{margin-inline-start:auto;background:var(--red-ink);color:var(--red);font-size:15px}
+.special-row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,260px);gap:12px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.special-row .card{color:var(--ink)}
+.special-empty{background:rgba(255,255,255,.12);border-radius:12px;padding:16px;font-size:14px}
+.card.is-special{border:2px solid var(--red)}
+.card.is-special .thumb{background:repeating-linear-gradient(-45deg,var(--stripe) 0 14px,transparent 14px 28px),var(--red-soft)}
+.off{position:absolute;top:8px;right:8px;background:var(--red);color:var(--red-ink);font-weight:800;border-radius:8px;padding:2px 10px;font-size:13px;font-variant-numeric:tabular-nums}
+.price.red{color:var(--red)}
+.old{color:var(--muted);text-decoration:line-through;font-size:13px;font-weight:500;font-variant-numeric:tabular-nums}
+.pill.size{background:var(--surface-2);color:var(--ink);direction:ltr;font-variant-numeric:tabular-nums}
+fieldset.special-box{grid-column:1/-1;border:2px solid var(--red);border-radius:12px;padding:12px 14px;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;background:var(--red-soft)}
+fieldset.special-box legend{color:var(--red);font-weight:800;padding-inline:6px}
+.check{grid-column:1/-1;display:flex;gap:8px;align-items:center;font-weight:700}
+.check input{width:18px;height:18px;accent-color:var(--red)}
+form.sell.tire-mode h2{color:var(--red)}
+form.sell.tire-mode #submitBtn{background:var(--red);color:var(--red-ink)}
+@media (max-width:520px){fieldset.special-box{grid-template-columns:1fr}.special-head .btn{margin-inline-start:0}}
 .empty{grid-column:1/-1;border:2px dashed var(--line);border-radius:14px;padding:40px 20px;text-align:center;color:var(--muted);display:grid;gap:12px;justify-items:center}
 .empty h3{color:var(--ink);font-size:20px}
 .btn{border:0;border-radius:var(--r);padding:10px 18px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
@@ -213,6 +241,18 @@ footer .wrap{padding-block:18px}
         </div>
       </div>
 
+      <section class="special" aria-labelledby="sp-title">
+        <div class="special-in">
+          <div class="special-head">
+            <span class="tag">قیمت ویژه</span>
+            <h2 id="sp-title">فروش ویژه لاستیک</h2>
+            <a class="btn" href="#sell-tire">ثبت لاستیک با قیمت ویژه</a>
+            <p>لاستیک نو و کارکرده با تخفیف. سایز را در جستجو بنویس، مثلاً 205/55R16.</p>
+          </div>
+          <div class="special-row" id="specialRow"></div>
+        </div>
+      </section>
+
       <div class="cats" id="cats" role="group" aria-label="دسته‌بندی"></div>
 
       <div class="toolbar">
@@ -288,6 +328,21 @@ footer .wrap{padding-block:18px}
           <span class="hint">این شماره برای همه بازدیدکنندگان آگهی نمایش داده می‌شود.</span>
           <span class="err" id="e-phone"></span>
         </div>
+        <fieldset class="special-box" id="specialBox">
+          <legend>قیمت ویژه</legend>
+          <label class="check"><input type="checkbox" id="f-special"> این آگهی با قیمت ویژه (تخفیف‌دار) منتشر شود</label>
+          <div class="field" id="oldPriceField" hidden>
+            <label for="f-oldprice">قیمت قبل از تخفیف (تومان)</label>
+            <input id="f-oldprice" inputmode="numeric" placeholder="۹٬۸۰۰٬۰۰۰">
+            <span class="hint" id="offPreview"></span>
+            <span class="err" id="e-oldprice"></span>
+          </div>
+          <div class="field" id="sizeField" hidden>
+            <label for="f-size">سایز لاستیک</label>
+            <input id="f-size" maxlength="20" placeholder="205/55R16" dir="ltr" style="text-align:right">
+            <span class="err" id="e-size"></span>
+          </div>
+        </fieldset>
         <div class="field full">
           <label for="f-desc">توضیحات</label>
           <textarea id="f-desc" maxlength="1200" placeholder="مدل دقیق، مدت استفاده، گارانتی، ایرادهای احتمالی، نصب در محل یا ارسال…"></textarea>
@@ -324,7 +379,8 @@ const CATS = [
   {id:"audio", name:"صوتی و تصویری", icon:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="9" cy="12" r="2.5"/><path d="M15 10h3M15 14h3"/>'},
   {id:"seat", name:"روکش و کفپوش", icon:'<path d="M7 3h6a2 2 0 0 1 2 2v8H7z"/><path d="M5 13h12l1 4H6z"/><path d="M8 17v4M16 17v4"/>'},
   {id:"light", name:"چراغ و نور", icon:'<path d="M14 6a6 6 0 0 1 0 12H11V6z"/><path d="M3 8h5M3 12h5M3 16h5"/>'},
-  {id:"wheel", name:"رینگ و لاستیک", icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/>'},
+  {id:"tire", name:"لاستیک", icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>'},
+  {id:"wheel", name:"رینگ", icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/>'},
   {id:"security", name:"دزدگیر و ردیاب", icon:'<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/>'},
   {id:"care", name:"شستشو و نگهداری", icon:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 14a2.5 2.5 0 0 0 2.5 2.5"/>'},
   {id:"interior", name:"تزئینات داخلی", icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M4 10c4 1 12 1 16 0M12 14v7"/>'},
@@ -362,6 +418,9 @@ const SAMPLES = [
   {id:"s6", title:"روکش صندلی پارچه‌ای طرح فابریک", cat:"seat", car:"تیبا / ساینا / کوییک", cond:"used", price:1100000, city:"کرج", phone:"09120000006", desc:"شش ماه استفاده، تمیز و بدون پارگی.", createdAt:now-4*D},
   {id:"s7", title:"پک امداد خودرو: جک، کابل باتری، جعبه کمک‌های اولیه", cat:"emergency", car:"همه خودروها", cond:"new", price:1750000, city:"تهران", phone:"09120000007", desc:"کیف برزنتی، جک دو تن، کابل ۳ متری.", createdAt:now-5*D},
   {id:"s8", title:"واکس و پولیش بدنه با پد", cat:"care", car:"همه خودروها", cond:"new", price:690000, city:"رشت", phone:"09110000008", desc:"ست کامل سه‌مرحله‌ای با دستمال مایکروفایبر.", createdAt:now-6*D},
+  {id:"s9", title:"لاستیک بارز P680 سایز 185/65R15 (جفت)", cat:"tire", size:"185/65R15", car:"پژو ۲۰۶", cond:"new", special:true, oldPrice:9800000, price:7900000, city:"تهران", phone:"09120000009", desc:"تولید ۱۴۰۵، دو حلقه، با بالانس رایگان.", createdAt:now-2*H},
+  {id:"s10", title:"لاستیک کویر KB44 سایز 165/65R13", cat:"tire", size:"165/65R13", car:"پراید", cond:"new", special:true, oldPrice:2300000, price:1850000, city:"قزوین", phone:"09120000010", desc:"هر حلقه. موجودی محدود.", createdAt:now-7*H},
+  {id:"s11", title:"لاستیک کومهو سایز 205/55R16 (سری ۴ عددی)", cat:"tire", size:"205/55R16", car:"دنا", cond:"used", special:true, oldPrice:24000000, price:17500000, city:"اصفهان", phone:"09130000011", desc:"۱۲ هزار کیلومتر کارکرد، آج ۸۵ درصد، بدون پنچری.", createdAt:now-1*D},
 ].map(a=>({...a, sample:true, sold:false}));
 
 let ads = [];           // flattened: {...ad, ownerId, key}
@@ -384,10 +443,18 @@ $("#cats").innerHTML = `<button class="cat" type="button" data-cat="" aria-press
   CATS.map(c=>`<button class="cat" type="button" data-cat="${c.id}" aria-pressed="false">${svg(c.icon)}${c.name}</button>`).join("");
 
 /* rendering */
+const isSpecial = a => a.special && a.oldPrice > a.price;
+const offPct = a => Math.round((1 - a.price/a.oldPrice)*100);
+function priceHtml(a, big=false){
+  const st = big ? ' style="font-size:22px"' : "";
+  if (!isSpecial(a)) return `<div class="price"${st}>${fa(a.price)} <small>تومان</small></div>`;
+  return `<div><span class="old">${fa(a.oldPrice)}</span><div class="price red"${st}>${fa(a.price)} <small>تومان</small></div></div>`;
+}
 function card(a, mine=false){
-  const c = catById(a.cat), on = saved.has(a.key);
-  return `<article class="card" tabindex="0" data-key="${esc(a.key)}" aria-label="${esc(a.title)}">
+  const c = catById(a.cat), on = saved.has(a.key), sp = isSpecial(a);
+  return `<article class="card${sp?" is-special":""}" tabindex="0" data-key="${esc(a.key)}" aria-label="${esc(a.title)}">
     <div class="thumb">${svg(c.icon)}
+      ${sp ? `<span class="off">٪${fa(offPct(a))} تخفیف</span>` : ""}
       ${mine ? "" : `<button class="save" type="button" data-save="${esc(a.key)}" aria-pressed="${on}" aria-label="نشان کردن">${svg(HEART)}</button>`}
     </div>
     <div class="body">
@@ -396,10 +463,11 @@ function card(a, mine=false){
         <span class="pill ${a.cond==="used"?"used":"new"}">${COND[a.cond]||"نو"}</span>
         ${a.sold ? `<span class="pill used">فروخته شد</span>` : ""}
         ${a.sample ? `<span class="pill sample">نمونه</span>` : ""}
+        ${a.size ? `<span class="pill size">${esc(a.size)}</span>` : ""}
         <span class="pill car">${esc(a.car)}</span>
       </div>
       <div class="meta">${esc(a.city)} · ${ago(a.createdAt||Date.now())}</div>
-      <div class="price">${fa(a.price)} <small>تومان</small></div>
+      ${priceHtml(a)}
     </div></article>`;
 }
 
@@ -410,7 +478,7 @@ function applyFilters(list){
     (!filt.cat || a.cat===filt.cat) &&
     (!filt.cond || a.cond===filt.cond) &&
     (filt.car==="همه خودروها" || a.car===filt.car || a.car==="همه خودروها") &&
-    (!q || (a.title+" "+(a.desc||"")+" "+a.city).toLowerCase().includes(q)));
+    (!q || (a.title+" "+(a.desc||"")+" "+a.city+" "+(a.size||"")).toLowerCase().includes(q)));
   const by = {new:(x,y)=>(y.createdAt||0)-(x.createdAt||0), cheap:(x,y)=>x.price-y.price, exp:(x,y)=>y.price-x.price}[filt.sort];
   return out.sort(by);
 }
@@ -442,7 +510,12 @@ function renderMine(){
   $("#mineGrid").innerHTML = list.length ? list.map(a=>card(a,true)).join("") :
     `<div class="empty"><h3>آگهی فعالی نداری</h3><p>لوازم اضافه ماشینت را بفروش.</p><a class="btn primary" href="#sell">ثبت آگهی</a></div>`;
 }
-function renderAll(){ renderBrowse(); renderSaved(); renderMine(); }
+function renderSpecial(){
+  const list = ads.filter(a=>!a.sold && a.cat==="tire" && isSpecial(a)).sort((x,y)=>(y.createdAt||0)-(x.createdAt||0));
+  $("#specialRow").innerHTML = list.length ? list.map(a=>card(a)).join("") :
+    `<div class="special-empty">هنوز لاستیکی با قیمت ویژه ثبت نشده. اولین نفر باش.</div>`;
+}
+function renderAll(){ renderSpecial(); renderBrowse(); renderSaved(); renderMine(); }
 
 function resetFilters(){
   Object.assign(filt,{q:"",car:"همه خودروها",cat:"",cond:""});
@@ -459,9 +532,11 @@ function openDetail(key){
   $("#d-title").textContent = a.title;
   $("#d-body").innerHTML = `
     <div class="thumb">${svg(c.icon)}</div>
-    <div class="price" style="font-size:22px">${fa(a.price)} <small>تومان</small></div>
+    ${priceHtml(a,true)}
     <dl class="specs">
       <dt>دسته</dt><dd>${c.name}</dd>
+      ${a.size ? `<dt>سایز</dt><dd dir="ltr" style="text-align:right">${esc(a.size)}</dd>` : ""}
+      ${isSpecial(a) ? `<dt>تخفیف</dt><dd style="color:var(--red)">٪${fa(offPct(a))} (قیمت قبل ${fa(a.oldPrice)} تومان)</dd>` : ""}
       <dt>سازگار با</dt><dd>${esc(a.car)}</dd>
       <dt>وضعیت</dt><dd>${COND[a.cond]||"نو"}${a.sold?" · فروخته شد":""}</dd>
       <dt>شهر</dt><dd>${esc(a.city)}</dd>
@@ -521,9 +596,12 @@ let toastT; function toast(m){ const t=$("#toast"); t.textContent=m; t.hidden=fa
 /* routing */
 const VIEWS=["browse","saved","mine","sell"];
 function route(){
-  const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "browse";
+  const h = location.hash.slice(1);
+  if (h==="sell-tire") presetTire();
+  else if (h==="sell") setTireMode(false);
+  const v = h==="sell-tire" ? "sell" : VIEWS.includes(h) ? h : "browse";
   VIEWS.forEach(n=>$("#view-"+n).hidden = n!==v);
-  document.querySelectorAll("nav.tabs a").forEach(a=>{ if(a.dataset.view===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  document.querySelectorAll("nav.tabs a").forEach(a=>{ if(a.dataset.view===v && !(a.dataset.view==="sell" && h==="sell-tire")) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   if (v!=="browse") scrollTo(0,0);
 }
 addEventListener("hashchange", route);
@@ -534,6 +612,23 @@ priceIn.addEventListener("input", () => {
   const n = parseInt(toLatin(priceIn.value).replace(/\D/g,""),10);
   $("#pricePreview").textContent = n ? `${fa(n)} تومان` : "";
 });
+const parseNum = v => parseInt(toLatin(v).replace(/\D/g,""),10);
+function syncSpecial(){
+  const on = $("#f-special").checked, tire = $("#f-cat").value==="tire";
+  $("#oldPriceField").hidden = !on;
+  $("#sizeField").hidden = !tire;
+  const o = parseNum($("#f-oldprice").value), n = parseNum(priceIn.value);
+  $("#offPreview").textContent = on && o && n && o>n ? `${fa(o)} تومان · ٪${fa(Math.round((1-n/o)*100))} تخفیف` : "";
+}
+function setTireMode(on){
+  $("#sellForm").classList.toggle("tire-mode", on);
+  $("#sellForm h2").textContent = on ? "ثبت فروش لاستیک با قیمت ویژه" : "ثبت آگهی فروش";
+}
+function presetTire(){
+  $("#f-cat").value = "tire"; $("#f-special").checked = true; setTireMode(true); syncSpecial();
+}
+["#f-special","#f-cat"].forEach(id=>$(id).addEventListener("change", syncSpecial));
+["#f-oldprice","#f-price"].forEach(id=>$(id).addEventListener("input", syncSpecial));
 function fieldErr(id, msg){ $("#e-"+id).textContent = msg||""; $("#f-"+id).setAttribute("aria-invalid", msg?"true":"false"); return !msg; }
 function errText(e){
   return "ذخیره نشد. حافظه مرورگر در دسترس نیست (مثلاً در حالت ناشناس).";
@@ -554,14 +649,20 @@ $("#sellForm").addEventListener("submit", async e => {
   ok = fieldErr("price", !price || price<1000 ? "قیمت را به تومان وارد کن." : "") && ok;
   ok = fieldErr("city", !city ? "شهر را بنویس." : "") && ok;
   ok = fieldErr("phone", !/^(\+98|0)?9\d{9}$/.test(phone) ? "شماره موبایل معتبر وارد کن، مثل ۰۹۱۲۱۲۳۴۵۶۷." : "") && ok;
+  const special = $("#f-special").checked, oldPrice = parseNum($("#f-oldprice").value), cat = $("#f-cat").value;
+  const size = $("#f-size").value.trim().toUpperCase().replace(/\s+/g,"");
+  ok = fieldErr("oldprice", special && !(oldPrice > price) ? "قیمت قبل باید از قیمت ویژه بیشتر باشد." : "") && ok;
+  ok = fieldErr("size", cat==="tire" && size && !/^\d{3}\/\d{2}R\d{2}$/.test(size) ? "سایز را به شکل 205/55R16 بنویس." : "") && ok;
   if (!ok) return;
   const ad = {id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), title, city, price, phone,
     cat:$("#f-cat").value, car:$("#f-car").value, cond:$("#f-cond").value, desc:$("#f-desc").value.trim().slice(0,1200), createdAt:Date.now(), sold:false};
+  if (special) Object.assign(ad, {special:true, oldPrice});
+  if (cat==="tire" && size) ad.size = size;
   const btn=$("#submitBtn"); btn.disabled=true; $("#sellStatus").textContent="در حال انتشار…";
   try {
     await saveMine([...myAds(), ad]);
-    e.target.reset(); $("#pricePreview").textContent=""; $("#sellStatus").textContent="";
-    toast("آگهی منتشر شد"); location.hash="mine";
+    e.target.reset(); $("#pricePreview").textContent=""; $("#sellStatus").textContent=""; setTireMode(false); syncSpecial();
+    toast(special ? "آگهی قیمت ویژه منتشر شد" : "آگهی منتشر شد"); location.hash="mine";
   } catch(err){ $("#sellStatus").textContent = errText(err); }
   finally { btn.disabled=false; }
 });
@@ -571,7 +672,7 @@ function showNotice(m){ const n=$("#dbNotice"); n.textContent=m; n.hidden=!m; }
 function start(){
   rebuild(loadMine());
   showNotice("نسخه نمایشی: آگهی‌های «نمونه» ساختگی‌اند و آگهی‌هایی که ثبت می‌کنی فقط در همین مرورگر ذخیره می‌شوند.");
-  renderAll(); route();
+  renderAll(); syncSpecial(); route();
 }
 start();
 </script>
